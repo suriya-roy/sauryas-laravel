@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,9 @@ Route::get('/contact', function () {
 });
 
 Route::get('/company', function () {
-    return view('company.index');
+    $companies = company::all();
+
+    return view('company.index',compact('companies'));
 });
 
 Route::get('/company/create', function () {
@@ -29,9 +32,23 @@ Route::get('/company/create', function () {
 });
 
 Route::post('/save-company', function (Request $request) {
-    return $request;
+    $company = new company();
+    $company->name = $request->name;
+    $company->email = $request->email;
+    $company->address = $request->address;
+    $file = $request->logo;
+    if ($file) {
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $file->move('photos', $fileName);
+        $company->logo = "photos/".$fileName;
+    }
+    $company->save();
+    return redirect('/company');
+});
+ Route::delete('/delete-company/{id}', function ($id) {
 
-
+    company::find($id)->delete();
+    return redirect('/company');
 
 });
 

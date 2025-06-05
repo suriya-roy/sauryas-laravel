@@ -8,7 +8,8 @@
                 <a href="/company" class="bg-blue-700 rounded text-white px-4 py-2">go back</a>
             </div>
         </div>
-        <form action="/save-company" method="post">
+        <img src="{{asset('images/ss.jpeg')}}" alt="">
+        <form action="/save-company" method="post" enctype="multipart/form-data">
             @csrf
             <div class="grid md:grid-cols-2 gap-5">
                 <div>
